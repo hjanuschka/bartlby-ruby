@@ -1,3 +1,5 @@
 require "bartlby/version"
 require "bartlby/command"
 require "bartlby/daemon"
+require "bartlby/scheduler"
+require "bartlby/worker"
