@@ -3,4 +3,4 @@ $:.push File.expand_path("../../lib", __FILE__)
 
 require 'bartlby'
 
-Bartlby::Process.start
+Bartlby::Command.new.run

@@ -1,5 +1,3 @@
 require "bartlby/version"
-
-module Bartlby
-  # Your code goes here...
-end
+require "bartlby/command"
+require "bartlby/daemon"
