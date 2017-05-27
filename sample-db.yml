@@ -1,0 +1,11 @@
+services:
+  8088:
+   - type: internal
+     plugin: bartlby_load.sh
+     arguments: "asdf"
+     last_check: 1495911234
+  1234:
+   - type: internal
+     plugin: bartlby_load.sh
+     arguments: "asdf"
+     last_check: 1495911234
