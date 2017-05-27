@@ -2,18 +2,18 @@ require 'commander'
 
 module Bartlby
   class Worker
-    def initialize(bunny: nil)
-      @bunny = bunny
+    def initialize(queue: nil, db: nill)
+      @db = db
+      @queue = queue
+      @shutdown = false
     end
+
     def run!
-    @bunny[:queue].subscribe(block: true, consumer_tag: "SCHEDULER") do |delivery_info, properties, body|
-        puts " [x] Received #{body}"
-        puts delivery_info.inspect
-        puts properties.inspect
-
-        # cancel the consumer to exit
+      until @shutdown
+        @queue.pull do |message|
+          puts "GOT Message #{message.inspect}"
+        end
       end
-
     end
   end
 end

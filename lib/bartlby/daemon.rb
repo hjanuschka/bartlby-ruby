@@ -5,28 +5,23 @@ module Bartlby
     def initialize(options)
       puts "INIT options: #{options.inspect}"
     end
+
     def start!
-
-      # Connect to MQ
-      @bunny = {
-            conn: Bunny.new(:hostname => "localhost"),
-      }
-      @bunny[:conn].start
-      @bunny[:ch] = @bunny[:conn].create_channel
-      @bunny[:queue] = @bunny[:ch].queue("BARTLBY")
-
-
-
       @threads ||= []
+      # FIXME: load correct DB layer
+      @db = Bartlby::DbYaml.new
+
+      # FIXME: load correct Queue Layer
+      @queue = Bartlby::NativeQueue.new
 
       # Start Scheduler
       @threads << Thread.new do
-        Bartlby::Scheduler.new(bunny: @bunny).run!
+        Bartlby::Scheduler.new(db: @db, queue: @queue).run!
       end
 
       # Start Worker
       @threads << Thread.new do
-        Bartlby::Worker.new(bunny: @bunny).run!
+        Bartlby::Worker.new(db: @db, queue: @queue).run!
       end
 
       # Wait for all threads to finish
@@ -34,6 +29,7 @@ module Bartlby
 
       cleanup
     end
+
     def cleanup
       @bunny[:conn].close
     end

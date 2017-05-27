@@ -2,15 +2,17 @@ require 'commander'
 
 module Bartlby
   class Scheduler
-   def initialize(bunny: nil)
-     @bunny = bunny
-   end
-   def run!
-     while true
-       puts "SCHEDULER"
-       @bunny[:queue].publish("some job", routing_key: "KEY", consumer_tag: "BTL_SCHEDULER")
-       sleep 10
-     end
-   end
+    def initialize(queue: nil, db: nill)
+      @db = db
+      @queue = queue
+    end
+
+    def run!
+      loop do
+        puts "SCHEDULER"
+        @queue.post("Some New Message")
+        sleep 10
+      end
+    end
   end
 end
