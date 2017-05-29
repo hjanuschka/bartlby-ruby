@@ -3,16 +3,20 @@ module Bartlby
   class Daemon
     attr_accessor :threads
     def initialize(options)
-      puts "INIT options: #{options.inspect}"
+      @options = options
+    end
+
+    def load_config
+      @configuration = YAML.load_file(File.expand_path(@options.config))
     end
 
     def start!
+      load_config
       @threads ||= []
-      # FIXME: load correct DB layer
-      @db = Bartlby::DbYaml.new
 
-      # FIXME: load correct Queue Layer
-      @queue = Bartlby::NativeQueue.new
+      @db = Object.const_get(@configuration["system"]["db"]).new(configuration: @configuration)
+
+      @queue = Object.const_get(@configuration["system"]["queue"]).new(configuration: @configuration)
 
       # Start Scheduler
       @threads << Thread.new do

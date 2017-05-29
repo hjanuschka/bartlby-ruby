@@ -1,0 +1,8 @@
+system:
+  db: Bartlby::DbYaml
+  queue: Bartlby::NativeQueue
+
+db:
+  yaml:
+    path: "sample-db.yml"
+

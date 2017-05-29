@@ -3,11 +3,10 @@ require 'yaml'
 
 module Bartlby
   class DbYaml < DbBase
-    def initialize(options = {})
-      puts "DB init"
+    def initialize(configuration: nil)
+      @yaml_file = File.expand_path(configuration["db"]["yaml"]["path"])
       @yaml = {}
-      @yaml = YAML.load_file("/tmp/db.yml") if File.exist?("/tmp/db.yml")
-      puts @yaml.inspect
+      @yaml = YAML.load_file(@yaml_file) if File.exist?(@yaml_file)
     end
 
     def load_service(id)
