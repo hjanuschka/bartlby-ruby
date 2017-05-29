@@ -52,7 +52,9 @@ module Bartlby
 
     def to_bytes(use_crc32 = self.calculate_crc32)
       a =  [use_crc32, @exit_code, @packet_type, @output, @arguments, @plugin, @perf_handler]
-      a.pack("Nsna2048a2048a2048a1024")
+      s = a.pack("Nsna2048a2048a2048a1024")
+      return s
+
     end
 
     def self.read(io, validate_crc32 = true)
