@@ -52,12 +52,12 @@ module Bartlby
 
     def to_bytes(use_crc32 = self.calculate_crc32)
       a =  [use_crc32, @exit_code, @packet_type, @output, @arguments, @plugin, @perf_handler]
-      a.pack("Nnna2048a2048a2048a1024")
+      a.pack("Nsna2048a2048a2048a1024")
     end
 
     def self.read(io, validate_crc32 = true)
       bytes = io.read(MAX_PACKET_SIZE)
-      values = bytes.unpack("NnnZ2048Z2048Z2048Z1024")
+      values = bytes.unpack("NsnZ2048Z2048Z2048Z1024")
       packet = self.new(values)
       packet.plugin = ""
       packet.arguments = ""
@@ -111,5 +111,5 @@ module Bartlby
   end
 end
 
-a = Bartlby::CheckV2.new({host: "212.186.195.202", port: 9030, ssl: true, plugin: "bartlby_load", arguments: "-c 20"})
+a = Bartlby::CheckV2.new({host: "212.186.195.202", port: 9030, ssl: true, plugin: "bartlby_load", arguments: "-c 0"})
 puts a.run.inspect
