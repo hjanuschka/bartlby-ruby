@@ -1,5 +1,6 @@
 require "bunny"
 module Bartlby
+  CONFIG = Bartlby::Config
   class Daemon
     attr_accessor :threads
     def initialize(options)
@@ -7,25 +8,24 @@ module Bartlby
     end
 
     def load_config
-      @configuration = YAML.load_file(File.expand_path(@options.config))
+      CONFIG.config =  YAML.load_file(File.expand_path(@options.config))
     end
 
     def start!
       load_config
       @threads ||= []
 
-      @db = Object.const_get(@configuration["system"]["db"]).new(configuration: @configuration)
-
-      @queue = Object.const_get(@configuration["system"]["queue"]).new(configuration: @configuration)
+      CONFIG.db = Object.const_get(CONFIG.config["system"]["db"]).new
+      CONFIG.queue = Object.const_get(CONFIG.config["system"]["queue"]).new
 
       # Start Scheduler
       @threads << Thread.new do
-        Bartlby::Scheduler.new(db: @db, queue: @queue).run!
+        Bartlby::Scheduler.new.run!
       end
 
       # Start Worker
       @threads << Thread.new do
-        Bartlby::Worker.new(db: @db, queue: @queue).run!
+        Bartlby::Worker.new.run!
       end
 
       # Wait for all threads to finish

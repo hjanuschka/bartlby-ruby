@@ -1,4 +1,5 @@
 require "bartlby/version"
+require "bartlby/config"
 require "bartlby/base/db_base"
 require "bartlby/base/queue_base"
 require "bartlby/base/service_base"
