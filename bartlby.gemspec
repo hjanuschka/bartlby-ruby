@@ -33,6 +33,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "commander"
   spec.add_dependency "bunny"
   spec.add_dependency "bindata"
+  spec.add_dependency "sinatra"
+  spec.add_dependency "thin"
   spec.add_development_dependency "bundler", "~> 1.13"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"

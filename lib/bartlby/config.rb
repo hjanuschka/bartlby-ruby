@@ -4,25 +4,28 @@ module Bartlby
     attr_accessor :db
     attr_accessor :queue
 
-    def self.db=(db)
-      @db = db
-    end
-    def self.db
-      @db
+    class << self
+      attr_writer :db
     end
 
-    def self.queue=(q)
-      @queue = q
-    end
-    def self.queue
-      @queue
+    class << self
+      attr_reader :db
     end
 
-    def self.config=(cfg)
-      @config = cfg
+    class << self
+      attr_writer :queue
     end
-    def self.config
-      @config
+
+    class << self
+      attr_reader :queue
+    end
+
+    class << self
+      attr_writer :config
+    end
+
+    class << self
+      attr_reader :config
     end
   end
 end

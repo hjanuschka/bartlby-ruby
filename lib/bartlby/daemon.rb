@@ -1,4 +1,3 @@
-require "bunny"
 module Bartlby
   CONFIG = Bartlby::Config
   class Daemon
@@ -8,7 +7,7 @@ module Bartlby
     end
 
     def load_config
-      CONFIG.config =  YAML.load_file(File.expand_path(@options.config))
+      CONFIG.config = YAML.load_file(File.expand_path(@options.config))
     end
 
     def start!
@@ -28,6 +27,11 @@ module Bartlby
         Bartlby::Worker.new.run!
       end
 
+      # start api server
+      @threads << Thread.new do
+        Bartlby::API::Server.run!
+      end
+
       # Wait for all threads to finish
       @threads.each(&:join)
 
@@ -35,7 +39,6 @@ module Bartlby
     end
 
     def cleanup
-      @bunny[:conn].close
     end
   end
 end
