@@ -6,6 +6,10 @@ module Bartlby
     class Server < Sinatra::Application
       set :port, 9090
       set :server, "thin"
+      set :root, File.dirname(__FILE__)
+      set :static, true
+      disable :traps
+      
 
       class << self
         attr_reader :sinatra_thread
@@ -19,7 +23,7 @@ module Bartlby
         exit!(0)
       end
 
-      run!
+      run! traps: false
     end
   end
 end

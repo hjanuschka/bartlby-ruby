@@ -12,6 +12,18 @@ module Bartlby
 
     def start!
       load_config
+
+      trap "SIGINT" do
+        begin
+        puts "Exiting"
+        @threads.each(&:kill)
+        exit 130
+        rescue => ex
+          puts ex.inspect
+        end
+      end
+
+
       @threads ||= []
 
       CONFIG.db = Object.const_get(CONFIG.config["system"]["db"]).new
@@ -35,6 +47,8 @@ module Bartlby
       # Wait for all threads to finish
       @threads.each(&:join)
 
+
+      
       cleanup
     end
 
